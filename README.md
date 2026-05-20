@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # vue_Demo
 
 This template should help get you started developing with Vue 3 in Vite.
@@ -71,3 +72,7 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+=======
+# roverDashboard
+A real time rover telemetry and control dashboard built using Vue 3, Vite, and TypeScript. 
+>>>>>>> upstream/main
