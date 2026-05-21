@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <h1>🚀 Rover Dashboard</h1>
+    <h1>Rover Dashboard</h1>
 
     <div class="grid">
       <CameraFeed />
