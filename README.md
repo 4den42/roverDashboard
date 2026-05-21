@@ -1,78 +1,124 @@
-<<<<<<< HEAD
-# vue_Demo
+Rover Dashboard
+# Rover Dashboard System (Current Overview)
 
-This template should help get you started developing with Vue 3 in Vite.
+## Summary
 
-## Recommended IDE Setup
+This project is a real-time remote rover control and monitoring system designed to operate securely over a Tailscale network. It provides live telemetry, a camera feed, and remote control capabilities through a web-based dashboard.
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+---
 
-## Recommended Browser Setup
+## Current Features
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+### 1. Web-Based Dashboard (Vue 3)
 
-## Type Support for `.vue` Imports in TS
+* Single-page application interface
+* Real-time updates from the rover
+* Displays telemetry and camera feed
+* Sends control commands to backend services
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+---
 
-## Customize configuration
+### 2. Backend API (FastAPI on Raspberry Pi)
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+* WebSocket telemetry stream:
 
-## Project Setup
+  * `/ws/telemetry`
+* REST control interface:
 
-```sh
-npm install
+  * `/control`
+* Camera streaming endpoint:
+
+  * `/camera`
+* Handles communication between frontend and hardware layer
+
+---
+
+### 3. Real-Time Telemetry System
+
+* Continuous data stream from Raspberry Pi to browser
+* Uses WebSocket for low-latency updates
+* Designed for live sensor and system state monitoring
+
+---
+
+### 4. Camera Streaming
+
+* Live video feed from rover-mounted camera
+* Accessible through HTTP endpoint
+* Displayed directly in the dashboard UI
+
+---
+
+### 5. Remote Control Interface
+
+* Sends structured commands from frontend to backend
+* Backend interprets and forwards commands to hardware layer
+
+---
+
+### 6. Secure Network Access (Tailscale)
+
+* Entire system is accessed through a private Tailscale URL
+* No public port forwarding required
+* Encrypted tunnel between user device and Raspberry Pi
+
+---
+
+## System Architecture
+
+```
+Browser (Vue Dashboard)
+        │
+        │ HTTPS (Tailscale Secure Tunnel)
+        ▼
+Raspberry Pi (FastAPI Backend)
+   ├── WebSocket: /ws/telemetry
+   ├── REST API: /control
+   ├── Camera Stream: /camera
+   └── Hardware Interface
 ```
 
-### Compile and Hot-Reload for Development
+---
 
-```sh
-npm run dev
-```
+## Advantages of This Design
 
-### Type-Check, Compile and Minify for Production
+### 1. Low-Latency Real-Time Control
 
-```sh
-npm run build
-```
+* WebSockets allow near-instant telemetry updates
+* Suitable for responsive remote interaction
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+---
 
-```sh
-npm run test:unit
-```
+### 2. Single Secure Access Point
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+* All services are exposed through a single Tailscale URL
+* Eliminates need for port forwarding or public exposure
 
-```sh
-# Install browsers for the first run
-npx playwright install
+---
 
-# When testing on CI, must build the project first
-npm run build
+### 3. Modular Architecture
 
-# Runs the end-to-end tests
-npm run test:e2e
-# Runs the tests only on Chromium
-npm run test:e2e -- --project=chromium
-# Runs the tests of a specific file
-npm run test:e2e -- tests/example.spec.ts
-# Runs the tests in debug mode
-npm run test:e2e -- --debug
-```
+* Frontend, backend, and hardware layers are separated
+* Each component can be upgraded independently
 
-### Lint with [ESLint](https://eslint.org/)
+---
 
-```sh
-npm run lint
-```
-=======
-# roverDashboard
-A real time rover telemetry and control dashboard built using Vue 3, Vite, and TypeScript. 
->>>>>>> upstream/main
+### 4. Remote Operability
+
+* Can be accessed from anywhere inside the Tailscale network
+* No dependency on local network proximity
+
+---
+
+### 5. Expandable Design
+
+* Can integrate additional sensors
+* Supports future upgrades like autonomy or AI-based control
+
+---
+
+## Intended Use Case
+
+* Remote robotics experimentation
+* Real-time embedded system control
+* Educational and prototyping platform for rover systems
