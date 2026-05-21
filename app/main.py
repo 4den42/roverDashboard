@@ -1,7 +1,8 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import StreamingResponse, FileResponse
 from app.core.telemetry import telemetry_generator
-from fastapi.responses import StreamingResponse
 import app.core.camera as camera_module
 import asyncio
 
@@ -36,3 +37,9 @@ def camera_feed():
         generate(),
         media_type="multipart/x-mixed-replace; boundary=frame"
     )
+
+app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
+
+@app.get("/{full_path:path}")
+async def serve_frontend(full_path: str):
+    return FileResponse("dist/index.html")
