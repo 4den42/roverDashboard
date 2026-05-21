@@ -1,15 +1,14 @@
 <script setup>
-function sendCommand(command) {
-  fetch('https://raspberrypi.taild8e577.ts.net/', {
+const send = async (command) => {
+  await fetch('/api/control', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ command })
-  })
-}
+  });
+};
 </script>
-
 <template>
   <div class="controls">
     <button @click="sendCommand('forward')">Forward</button>
