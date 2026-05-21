@@ -1,6 +1,6 @@
 <script setup>
 function sendCommand(command) {
-  fetch('http://192.168.1.50:5000/control', {
+  fetch('https://raspberrypi.taild8e577.ts.net/', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
