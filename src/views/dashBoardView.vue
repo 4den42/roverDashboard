@@ -1,13 +1,15 @@
 <template>
   <div class="dashboard">
-    <h1>Rover Dashboard</h1>
+    <div class="section-label">Telemetry</div>
+    <TelemetryPanel class="mb" />
 
-    <div class="grid">
-      <CameraFeed />
-      <TelemetryPanel />
+    <div class="content">
+      <div class="camera-card">
+        <div class="card-header">Live camera</div>
+        <CameraFeed />
+      </div>
+      <ControlPad />
     </div>
-
-    <ControlPad />
   </div>
 </template>
 
@@ -19,16 +21,48 @@ import ControlPad from '../components/controlPad.vue'
 
 <style scoped>
 .dashboard {
-  padding: 20px;
-  color: white;
-  background: #111;
-  min-height: 100vh;
+  padding: 16px;
+  max-width: 960px;
+  margin: 0 auto;
 }
 
-.grid {
+.section-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 10px;
+}
+
+.mb { margin-bottom: 16px; }
+
+.content {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 20px;
-  margin-bottom: 20px;
+  gap: 16px;
 }
-</style>
+
+.camera-card {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-header {
+  font-size: 11px;
+    grid-template-columns: 1fr;
+}
+</style>  }
+
+  .content {
+@media (max-width: 600px) {
+}
+  border-bottom: 1px solid #2a2a2a;
+  padding: 12px 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #555;
+
