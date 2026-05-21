@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-const url = "http://100.78.160.76:8000/camera"
+const url = "https://raspberrypi.taild8e577.ts.net/camera"
 </script>
 
 <style scoped>

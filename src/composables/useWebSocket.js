@@ -2,7 +2,7 @@ import { useTelemetryStore } from '@/stores/telemetry'
 
 export function useWebSocket() {
   const store = useTelemetryStore()
-  const ws = new WebSocket('ws://100.78.160.76:8000/ws/telemetry')
+  const ws = new WebSocket(const ws = new WebSocket('wss://raspberrypi.taild8e577.ts.net/ws/telemetry'))
 
   ws.onmessage = (event) => {
     const data = JSON.parse(event.data)
