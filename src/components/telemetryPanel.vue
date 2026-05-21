@@ -1,44 +1,29 @@
 <script setup>
 import { useTelemetryStore } from '../stores/telemetry'
-
-const telemetry = useTelemetryStore()
+const t = useTelemetryStore()
 </script>
 
 <template>
-  <div class="telemetry-grid">
-    <div class="card">
-      <h3>Speed</h3>
-      <p>{{ telemetry.speed }} MPH</p>
-    </div>
-
-    <div class="card">
-      <h3>Battery</h3>
-      <p>{{ telemetry.battery }}%</p>
-    </div>
-
-    <div class="card">
-      <h3>Temperature</h3>
-      <p>{{ telemetry.temperature }}°C</p>
- </div>
-
-    <div class="card">
-      <h3>Signal</h3>
-      <p>{{ telemetry.signalStrength }}%</p>
-    </div>
+  <div class="grid">
+    <div class="card">CPU: {{ t.cpu }}%</div>
+    <div class="card">RAM: {{ t.ram }}%</div>
+    <div class="card">Temp: {{ t.temperature }}°C</div>
+    <div class="card">WiFi: {{ t.wifi }} dBm</div>
+    <div class="card">Uptime: {{ t.uptime }}s</div>
   </div>
 </template>
 
 <style scoped>
-.telemetry-grid {
+.grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
 }
 
 .card {
-  background: #1e1e1e;
+  background: #222;
   color: white;
-  padding: 1rem;
-  border-radius: 12px;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>

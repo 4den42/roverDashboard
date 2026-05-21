@@ -1,13 +1,38 @@
 import asyncio
-import random
+import psutil
+import os
+
+def get_cpu_temp():
+    try:
+        return float(
+            os.popen("vcgencmd measure_temp").readline()
+            .replace("temp=", "")
+            .replace("'C\n", "")
+        )
+    except:
+        return 0.0
+
+def get_wifi_strength():
+    try:
+        result = os.popen("iwconfig wlan0").read()
+        for line in result.split("\n"):
+            if "Signal level" in line:
+                return int(line.split("Signal level=")[1].split(" ")[0])
+    except:
+        return 0
 
 async def telemetry_generator():
     while True:
-        yield {
-            "speed": random.randint(0, 12),
-            "battery": random.randint(60, 100),
-            "temperature": random.randint(25, 50),
-            "signal": random.randint(70, 100)
+        cpu = psutil.cpu_percent()
+        mem = psutil.virtual_memory()
+
+        data = {
+            "cpu": cpu,
+            "ram": mem.percent,
+            "temperature": get_cpu_temp(),
+            "wifi": get_wifi_strength(),
+            "uptime": int(os.popen("cat /proc/uptime").read().split()[0])
         }
 
+        yield data
         await asyncio.sleep(1)

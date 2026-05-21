@@ -2,21 +2,21 @@ import { defineStore } from 'pinia'
 
 export const useTelemetryStore = defineStore('telemetry', {
   state: () => ({
-    speed: 0,
-    battery: 100,
+    cpu: 0,
+    ram: 0,
     temperature: 0,
-    signalStrength: 0,
-    cpuUsage: 0,
+    wifi: 0,
+    uptime: 0,
     connected: false
   }),
 
   actions: {
     updateTelemetry(data) {
-      this.speed = data.speed
-      this.battery = data.battery
+      this.cpu = data.cpu
+      this.ram = data.ram
       this.temperature = data.temperature
-      this.signalStrength = data.signalStrength
-      this.cpuUsage = data.cpuUsage
+      this.wifi = data.wifi
+      this.uptime = data.uptime
       this.connected = true
     }
   }

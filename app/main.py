@@ -1,12 +1,17 @@
 from fastapi import FastAPI, WebSocket
-from app.api.routes import router
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.telemetry import telemetry_generator
 
 app = FastAPI()
 
-app.include_router(router)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-# WebSocket for live telemetry
 @app.websocket("/ws/telemetry")
 async def telemetry_ws(websocket: WebSocket):
     await websocket.accept()
