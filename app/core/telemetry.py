@@ -1,6 +1,7 @@
 import asyncio
 import psutil
 import os
+import time
 
 def get_cpu_temp():
     try:
@@ -31,7 +32,7 @@ async def telemetry_generator():
             "ram": mem.percent,
             "temperature": get_cpu_temp(),
             "wifi": get_wifi_strength(),
-            "uptime": int(os.popen("cat /proc/uptime").read().split()[0])
+            "uptime": int(time.time() - psutil.boot_time())
         }
 
         yield data
