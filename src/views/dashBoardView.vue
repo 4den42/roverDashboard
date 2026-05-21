@@ -12,9 +12,9 @@
 </template>
 
 <script setup>
-import CameraFeed from '../components/CameraFeed.vue'
-import TelemetryPanel from '../components/TelemetryPanel.vue'
-import ControlPad from '../components/ControlPad.vue'
+import CameraFeed from '../components/cameraFeed.vue'
+import TelemetryPanel from '../components/telemetryPanel.vue'
+import ControlPad from '../components/controlPad.vue'
 </script>
 
 <style scoped>
