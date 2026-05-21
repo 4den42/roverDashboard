@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-const url = "http://192.168.1.50:8000/camera"
+const url = "http://100.78.160.76:8000/camera"
 </script>
 
 <style scoped>
