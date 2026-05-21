@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'dashboard',
-    component: dashBoardView
+    component: DashboardView
   }
 ]
 
