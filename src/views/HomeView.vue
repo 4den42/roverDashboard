@@ -1,8 +1,8 @@
 <script setup>
 import { onMounted } from 'vue'
-import CameraFeed from '../components/cameraFeed.vue'
-import TelemetryPanel from '../components/telemetryPanel.vue'
-import ControlPad from '../components/controlPad.vue'
+import cameraFeed from '../components/cameraFeed.vue'
+import telemetryPanel from '../components/telemetryPanel.vue'
+import controlPad from '../components/controlPad.vue'
 import { useTelemetryStore } from '../stores/telemetry'
 
 const telemetry = useTelemetryStore()

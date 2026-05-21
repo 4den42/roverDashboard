@@ -1,6 +1,9 @@
 from fastapi import FastAPI, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.telemetry import telemetry_generator
+from fastapi.responses import StreamingResponse
+from app.core.camera import latest_frame
+import time
 
 app = FastAPI()
 
@@ -18,3 +21,23 @@ async def telemetry_ws(websocket: WebSocket):
 
     async for data in telemetry_generator():
         await websocket.send_json(data)
+
+def generate():
+    global latest_frame
+
+    while True:
+        if latest_frame is None:
+            continue
+
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + latest_frame + b'\r\n')
+
+        time.sleep(0.03)
+
+
+@app.get("/camera")
+def camera_feed():
+    return StreamingResponse(
+        generate(),
+        media_type="multipart/x-mixed-replace; boundary=frame"
+    )

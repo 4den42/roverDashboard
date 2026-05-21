@@ -1,22 +1,18 @@
-<script setup>
-const streamUrl = 'http://192.168.1.50:8080/video'
-</script>
-
 <template>
-  <div class="camera-container">
-    <img :src="streamUrl" class="camera-feed" />
+  <div class="camera">
+    <h3>Live Camera</h3>
+    <img :src="url" />
   </div>
 </template>
 
+<script setup>
+const url = "http://192.168.1.50:8000/camera"
+</script>
+
 <style scoped>
-.camera-container {
+.camera img {
   width: 100%;
-  background: #111;
-  border-radius: 12px;
-  overflow: hidden;
-}
-.camera-feed {
-  width: 100%;
-  display: block;
+  border-radius: 10px;
+  border: 2px solid #333;
 }
 </style>
