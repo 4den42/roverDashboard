@@ -1,6 +1,15 @@
 <script setup>
+import { computed } from 'vue'
 import { useTelemetryStore } from '../stores/telemetry'
 const t = useTelemetryStore()
+
+function fmtSpeed(kbps) {
+  if (kbps >= 1024) return (kbps / 1024).toFixed(1) + ' MB/s'
+  return kbps.toFixed(1) + ' KB/s'
+}
+
+const ethRx = computed(() => fmtSpeed(t.eth_rx))
+const ethTx = computed(() => fmtSpeed(t.eth_tx))
 </script>
 
 <template>
@@ -27,6 +36,11 @@ const t = useTelemetryStore()
     <div class="metric">
       <span class="label">Uptime</span>
       <span class="value">{{ t.uptime }}<span class="unit">s</span></span>
+    </div>
+    <div class="metric">
+      <span class="label">ETH</span>
+      <div class="eth-row"><span class="eth-dir">↓</span><span class="value eth-val">{{ ethRx }}</span></div>
+      <div class="eth-row"><span class="eth-dir">↑</span><span class="value eth-val">{{ ethTx }}</span></div>
     </div>
   </div>
 </template>
@@ -80,5 +94,21 @@ const t = useTelemetryStore()
   height: 100%;
   border-radius: 2px;
   transition: width 0.5s ease;
+}
+
+.eth-row {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  margin-top: 4px;
+}
+
+.eth-dir {
+  font-size: 13px;
+  color: #555;
+}
+
+.eth-val {
+  font-size: 16px;
 }
 </style>

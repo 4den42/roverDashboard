@@ -7,6 +7,8 @@ export const useTelemetryStore = defineStore('telemetry', {
     temperature: 0,
     wifi: 0,
     uptime: 0,
+    eth_rx: 0,
+    eth_tx: 0,
     connected: false
   }),
 
@@ -17,6 +19,8 @@ export const useTelemetryStore = defineStore('telemetry', {
       this.temperature = data.temperature
       this.wifi = data.wifi
       this.uptime = data.uptime
+      this.eth_rx = data.eth_rx
+      this.eth_tx = data.eth_tx
       this.connected = true
     }
   }

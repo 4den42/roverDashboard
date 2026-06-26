@@ -21,14 +21,15 @@ function connect() {
     }
   }
 
-  ws.onclose = () => {
-    store.connected = false
-    reconnectTimer = setTimeout(connect, 3000)
-  }
-
   ws.onerror = () => {
     store.connected = false
-    ws.close()
+    // browser closes the socket after an error; onclose handles reconnect
+  }
+
+  ws.onclose = () => {
+    store.connected = false
+    clearTimeout(reconnectTimer)
+    reconnectTimer = setTimeout(connect, 3000)
   }
 }
 
@@ -37,5 +38,12 @@ export function useWebSocket() {
     clearTimeout(reconnectTimer)
     connect()
   }
-  return { ws }
+}
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    clearTimeout(reconnectTimer)
+    ws?.close()
+    ws = null
+  })
 }
