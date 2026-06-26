@@ -12,19 +12,27 @@ const send = async (command) => {
   <div class="controls-wrap">
     <p class="section-label">Controls</p>
     <div class="dpad">
-      <button class="btn" style="grid-column:2;grid-row:1" @click="send('forward')">
+      <button class="btn" style="grid-column:2;grid-row:1"
+        @mousedown.prevent="send('forward')" @mouseup.prevent="send('stop')" @mouseleave="send('stop')"
+        @touchstart.prevent="send('forward')" @touchend.prevent="send('stop')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
       </button>
-      <button class="btn" style="grid-column:1;grid-row:2" @click="send('left')">
+      <button class="btn" style="grid-column:1;grid-row:2"
+        @mousedown.prevent="send('left')" @mouseup.prevent="send('stop')" @mouseleave="send('stop')"
+        @touchstart.prevent="send('left')" @touchend.prevent="send('stop')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
       </button>
       <button class="btn btn-stop" style="grid-column:2;grid-row:2" @click="send('stop')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="6" y="6" width="12" height="12" rx="1"/></svg>
       </button>
-      <button class="btn" style="grid-column:3;grid-row:2" @click="send('right')">
+      <button class="btn" style="grid-column:3;grid-row:2"
+        @mousedown.prevent="send('right')" @mouseup.prevent="send('stop')" @mouseleave="send('stop')"
+        @touchstart.prevent="send('right')" @touchend.prevent="send('stop')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
-      <button class="btn" style="grid-column:2;grid-row:3" @click="send('backward')">
+      <button class="btn" style="grid-column:2;grid-row:3"
+        @mousedown.prevent="send('backward')" @mouseup.prevent="send('stop')" @mouseleave="send('stop')"
+        @touchstart.prevent="send('backward')" @touchend.prevent="send('stop')">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
       </button>
     </div>

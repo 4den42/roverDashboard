@@ -1,18 +1,23 @@
+from gpiozero import Motor
+
+_left = Motor(forward=24, backward=25)
+_right = Motor(forward=22, backward=6)
+_left.stop()
+_right.stop()
+
 def handle_command(command: str):
     if command == "forward":
-        print("Motor: FORWARD")
-
+        _left.forward()
+        _right.forward()
     elif command == "backward":
-        print("Motor: BACKWARD")
-
+        _left.backward()
+        _right.backward()
     elif command == "left":
-        print("Motor: LEFT")
-
+        _left.backward()
+        _right.forward()
     elif command == "right":
-        print("Motor: RIGHT")
-
+        _left.forward()
+        _right.backward()
     elif command == "stop":
-        print("Motor: STOP")
-
-    else:
-        print("Unknown command:", command)
+        _left.stop()
+        _right.stop()
