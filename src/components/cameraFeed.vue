@@ -1,12 +1,11 @@
 <template>
   <div class="camera">
-    <h3>Live Camera</h3>
     <img :src="url" />
   </div>
 </template>
 
 <script setup>
-const url = `https://${window.location.host}/camera`;
+const url = `${window.location.protocol}//${window.location.host}/camera`
 </script>
 
 <style scoped>

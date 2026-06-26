@@ -20,7 +20,8 @@ def get_wifi_strength():
             if "Signal level" in line:
                 return int(line.split("Signal level=")[1].split(" ")[0])
     except:
-        return 0
+        pass
+    return 0
 
 async def telemetry_generator():
     while True:

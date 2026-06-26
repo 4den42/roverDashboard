@@ -52,17 +52,17 @@ import ControlPad from '../components/controlPad.vue'
 
 .card-header {
   font-size: 11px;
-    grid-template-columns: 1fr;
-}
-</style>  }
-
-  .content {
-@media (max-width: 600px) {
-}
   border-bottom: 1px solid #2a2a2a;
   padding: 12px 14px;
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #555;
+}
 
+@media (max-width: 600px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
