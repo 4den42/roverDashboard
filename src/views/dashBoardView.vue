@@ -8,7 +8,10 @@
         <div class="card-header">Live camera</div>
         <CameraFeed />
       </div>
-      <ControlPad />
+      <div class="right-col">
+        <ControlPad />
+        <LightSwitch />
+      </div>
     </div>
   </div>
 </template>
@@ -17,6 +20,7 @@
 import CameraFeed from '../components/cameraFeed.vue'
 import TelemetryPanel from '../components/telemetryPanel.vue'
 import ControlPad from '../components/controlPad.vue'
+import LightSwitch from '../components/lightSwitch.vue'
 </script>
 
 <style scoped>
@@ -52,17 +56,23 @@ import ControlPad from '../components/controlPad.vue'
 
 .card-header {
   font-size: 11px;
-    grid-template-columns: 1fr;
-}
-</style>  }
-
-  .content {
-@media (max-width: 600px) {
-}
   border-bottom: 1px solid #2a2a2a;
   padding: 12px 14px;
   font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #555;
+}
 
+.right-col {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 600px) {
+  .content {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
