@@ -1,12 +1,10 @@
 from gpiozero import LED
 
-_light = LED(23)
+_lights = [LED(23), LED(5)]
 
 def set_light(state: bool):
-    if state:
-        _light.on()
-    else:
-        _light.off()
+    for light in _lights:
+        light.on() if state else light.off()
 
 def get_light() -> bool:
-    return _light.is_active
+    return _lights[0].is_active

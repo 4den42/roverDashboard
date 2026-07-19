@@ -1,4 +1,6 @@
 import { useTelemetryStore } from '@/stores/telemetry'
+import { useAuthStore } from '@/stores/auth'
+import router from '@/router'
 
 let ws = null
 let reconnectTimer = null
@@ -26,9 +28,14 @@ function connect() {
     // browser closes the socket after an error; onclose handles reconnect
   }
 
-  ws.onclose = () => {
+  ws.onclose = (event) => {
     store.connected = false
     clearTimeout(reconnectTimer)
+    if (event.code === 1008) {
+      useAuthStore().authenticated = false
+      router.push('/login')
+      return
+    }
     reconnectTimer = setTimeout(connect, 3000)
   }
 }

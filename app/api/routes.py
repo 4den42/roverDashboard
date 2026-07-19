@@ -1,21 +1,27 @@
-from fastapi import APIRouter
+from typing import Literal
+from fastapi import APIRouter, Depends
+from pydantic import BaseModel
+from app.auth import require_auth
 from app.hardware.motors import handle_command
 from app.hardware.lights import set_light, get_light
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(require_auth)])
+
+class ControlRequest(BaseModel):
+    command: Literal["forward", "backward", "left", "right", "stop"]
+
+class LightRequest(BaseModel):
+    state: bool
 
 @router.post("/api/control")
-async def control(data: dict):
-    command = data.get("command")
-    print("COMMAND RECEIVED:", command)
-    handle_command(command)
-    return {"status": "ok", "command": command}
+async def control(data: ControlRequest):
+    handle_command(data.command)
+    return {"status": "ok", "command": data.command}
 
 @router.post("/api/light")
-async def light(data: dict):
-    state = bool(data.get("state", False))
-    set_light(state)
-    return {"status": "ok", "state": state}
+async def light(data: LightRequest):
+    set_light(data.state)
+    return {"status": "ok", "state": data.state}
 
 @router.get("/api/light")
 async def light_state():

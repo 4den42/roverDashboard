@@ -1,7 +1,7 @@
 from gpiozero import Motor
 
-_left = Motor(forward=24, backward=25)
-_right = Motor(forward=22, backward=6)
+_left = Motor(forward=25, backward=24, pwm=False)
+_right = Motor(forward=6, backward=22, pwm=False)
 _left.stop()
 _right.stop()
 
