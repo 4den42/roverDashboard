@@ -3,30 +3,20 @@ import psutil
 import time
 
 
-async def get_cpu_temp():
+def get_cpu_temp() -> float:
     try:
-        proc = await asyncio.create_subprocess_exec(
-            "vcgencmd", "measure_temp",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.DEVNULL,
-        )
-        stdout, _ = await proc.communicate()
-        return float(stdout.decode().replace("temp=", "").replace("'C\n", "").strip())
+        with open("/sys/class/thermal/thermal_zone0/temp") as f:
+            return float(f.read()) / 1000
     except Exception:
         return 0.0
 
 
-async def get_wifi_strength():
+def get_wifi_strength() -> int:
     try:
-        proc = await asyncio.create_subprocess_exec(
-            "iwconfig", "wlan0",
-            stdout=asyncio.subprocess.PIPE,
-            stderr=asyncio.subprocess.DEVNULL,
-        )
-        stdout, _ = await proc.communicate()
-        for line in stdout.decode().split("\n"):
-            if "Signal level" in line:
-                return int(line.split("Signal level=")[1].split(" ")[0])
+        with open("/proc/net/wireless") as f:
+            for line in f:
+                if "wlan0" in line:
+                    return int(float(line.split()[3].rstrip(".")))
     except Exception:
         pass
     return 0
@@ -51,15 +41,13 @@ async def telemetry_generator():
         prev_net = cur_net
         prev_net_time = cur_time
 
-        data = {
+        yield {
             "cpu": cpu,
             "ram": mem.percent,
-            "temperature": await get_cpu_temp(),
-            "wifi": await get_wifi_strength(),
+            "temperature": get_cpu_temp(),
+            "wifi": get_wifi_strength(),
             "uptime": int(time.time() - psutil.boot_time()),
             "eth_rx": eth_rx,
             "eth_tx": eth_tx,
         }
-
-        yield data
         await asyncio.sleep(1)
