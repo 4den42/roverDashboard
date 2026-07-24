@@ -6,7 +6,7 @@ from fastapi.responses import StreamingResponse, FileResponse
 from starlette.websockets import WebSocket, WebSocketDisconnect
 from app.core.telemetry import telemetry_generator
 from app.api.routes import router
-from app.auth import SESSION_TOKENS, auth_router, require_auth
+from app.auth import auth_router, check_session, require_auth
 import app.core.camera as camera_module
 import asyncio
 
@@ -18,7 +18,6 @@ _clients_lock = asyncio.Lock()
 ALLOWED_ORIGINS = [
     "https://raspberrypi.taild8e577.ts.net",
     "http://localhost:8000",
-    "http://100.78.160.76:8000",
 ]
 
 app = FastAPI()
@@ -37,8 +36,7 @@ app.add_middleware(
 @app.websocket("/ws/telemetry")
 async def telemetry_ws(websocket: WebSocket):
     global connected_clients
-    session = websocket.cookies.get("session")
-    if not session or session not in SESSION_TOKENS:
+    if not check_session(websocket.cookies.get("session")):
         await websocket.close(code=1008)
         return
     origin = websocket.headers.get("origin")
@@ -66,21 +64,31 @@ async def telemetry_ws(websocket: WebSocket):
                 camera_module.capture_active.clear()
                 logger.info("No clients — camera paused")
 
-async def generate():
-    while True:
-        if camera_module.latest_frame is None:
-            await asyncio.sleep(0.03)
-            continue
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + camera_module.latest_frame + b'\r\n')
-        await asyncio.sleep(0.03)
-
 @app.get("/camera", dependencies=[Depends(require_auth)])
 async def camera_feed():
-    return StreamingResponse(
-        generate(),
-        media_type="multipart/x-mixed-replace; boundary=frame"
-    )
+    async def stream():
+        global connected_clients
+        async with _clients_lock:
+            connected_clients += 1
+            if connected_clients == 1:
+                camera_module.capture_active.set()
+                logger.info("Camera client connected — camera active")
+        try:
+            while True:
+                if camera_module.latest_frame is None:
+                    await asyncio.sleep(0.03)
+                    continue
+                yield (b'--frame\r\n'
+                       b'Content-Type: image/jpeg\r\n\r\n' + camera_module.latest_frame + b'\r\n')
+                await asyncio.sleep(0.03)
+        finally:
+            async with _clients_lock:
+                connected_clients -= 1
+                if connected_clients == 0:
+                    camera_module.capture_active.clear()
+                    logger.info("No clients — camera paused")
+
+    return StreamingResponse(stream(), media_type="multipart/x-mixed-replace; boundary=frame")
 
 app.mount("/assets", StaticFiles(directory="dist/assets"), name="assets")
 
